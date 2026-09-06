@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { Prisma, User as UserModel } from '@prisma/client';
 import { UserService } from './user.service';
 
@@ -18,4 +18,16 @@ export class UserController {
     async getUser(@Param('id') id: string): Promise<UserModel | null> {
         return this.userService.user({ id });
     }
+
+    @Put(':id')
+    async updateUser(
+        @Body() userData: Prisma.UserUpdateInput,
+        @Param('id') id: string,
+    ): Promise<UserModel>{
+        return this.userService.updateUser({
+            where: { id },
+            data: userData,
+        });
+    }
+
 }
